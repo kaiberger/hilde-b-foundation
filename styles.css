@@ -1,15 +1,15 @@
 /* General Styles */
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Helvetica Neue', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8;
+    background-color: #f5f5f5;
     color: #333;
     line-height: 1.6;
 }
 
 header {
-    background: #8B0000; /* Deep red conveys seriousness and urgency */
+    background: #9C7DCB; /* Matches brand purple */
     color: #fff;
     padding: 20px;
     text-align: center;
@@ -19,6 +19,7 @@ nav ul {
     list-style: none;
     padding: 0;
     text-align: center;
+    margin: 0;
 }
 
 nav ul li {
@@ -37,36 +38,37 @@ section {
     padding: 50px;
     max-width: 800px;
     margin: auto;
-    background: #fff;
+    background: #ffffff;
     margin-bottom: 20px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 10px rgba(156, 125, 203, 0.15); /* subtle purple shadow */
     border-radius: 8px;
 }
 
 h2 {
-    color: #8B0000;
+    color: #6B4FA4; /* A slightly darker brand purple */
     text-align: center;
 }
 
 .button {
     display: inline-block;
-    background: #8B0000;
+    background: #6B4FA4;
     color: #fff;
     padding: 12px 20px;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 6px;
     font-weight: bold;
     text-align: center;
     margin-top: 20px;
+    transition: background 0.3s ease;
 }
 
 .button:hover {
-    background: #a52a2a;
+    background: #593b8c; /* Darker hover purple */
 }
 
 /* Footer */
 footer {
-    background: #8B0000;
+    background: #9C7DCB;
     color: white;
     text-align: center;
     padding: 15px;
