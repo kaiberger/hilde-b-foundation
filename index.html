@@ -1,219 +1,385 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hilde B Foundation / Foundation</title>
-    <link rel="stylesheet" href="styles.css">
-    <script>
-        function switchLanguage(lang) {
-            document.getElementById('content-en').style.display = (lang === 'en') ? 'block' : 'none';
-            document.getElementById('content-de').style.display = (lang === 'de') ? 'block' : 'none';
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hilde B Foundation - Multilingual</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    header {
+        background-color: #701a1a;
+        padding: 20px 0;
+        color: white;
+        text-align: center;
+    }
+    header nav ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    header nav ul li a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .language-buttons {
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+        background-color: #701a1a;
+    }
+    .button {
+        background-color: #701a1a;
+        color: white;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+  </style>
+  <script>
+    function switchLanguage(lang) {
+      const langs = ['en', 'de', 'es', 'fr', 'sv', 'it'];
+      langs.forEach(l => {
+        const section = document.getElementById('content-' + l);
+        if (section) section.style.display = (l === lang) ? 'block' : 'none';
+      });
+    }
+  </script>
 </head>
 <body onload="switchLanguage('en')">
-    <header>
-        <div style="display: flex; justify-content: flex-end; padding: 10px;">
-            <button onclick="switchLanguage('en')"><img src="us-flag-icon.png" alt="US Flag" style="width:24px; height:auto; margin-right:10px;"></button>
-            <button onclick="switchLanguage('de')"><img src="germany-flag-icon.png" alt="German Flag" style="width:24px; height:auto;"></button>
-        </div>
-    </header>
-
-    <!-- English Content -->
-    <div id="content-en">
-<header>
-        <h1>Hilde B Foundation</h1>
-        <p>Breaking the Cycle, Building a Future</p>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#get-help">Get Help</a></li>
-                <li><a href="#donate">Donate</a></li>
-                <li><a href="#volunteer">Volunteer</a></li> <!-- New Volunteer Link -->
-                <li><a href="#contact">Contact Us</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section id="home">
-        <h2>Our Mission</h2>
-        <p>The Hilde B Foundation is committed to eliminating domestic violence from all American households by 2035. We provide resources for victims, support domestic violence shelters, and advocate for a future free of abuse.</p>
-        <a href="#get-help" class="button">Get Help Now</a>
-        <a href="#donate" class="button">Support Our Mission</a>
-    </section>
-
-    <section id="about">
-        <h2>About Us</h2>
-        <p>Headquartered in Santa Clara, California, the Hilde B Foundation is dedicated to ending domestic violence in the U.S. by 2035. We work towards immediate aid for victims, support for shelters, and raising awareness to break the cycle of abuse.</p>
-    </section>
-
-    <section id="get-help">
-        <h2>Get Help</h2>
-        <p>If you or someone you know is experiencing domestic violence, help is available.</p>
-        <ul>
-            <li><strong>National Domestic Violence Hotline:</strong> <a href="tel:8007997233">800-799-7233</a></li>
-            <li><strong>Text:</strong> “START” to 88788</li>
-            <li><strong>Online Chat:</strong> <a href="https://www.thehotline.org/">thehotline.org</a></li>
-        </ul>
-    </section>
-
-    <section id="donate">
-        <h2>Donate</h2>
-        <p>Join us in creating a world free from domestic violence. Your donation will provide emergency shelter, counseling, and legal aid.</p>
-        <script src="https://donorbox.org/widget.js" paypalExpress="false"></script>
-        <center>
-        <iframe src="https://donorbox.org/embed/end-domestic-violence-1?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="900px" width="100%" style="max-width: 500px; min-width: 250px; max-height:none!important" allow="payment"></iframe>
-   </center>
-    </section>
-
-    
-
-    <section id="partners" style="padding: 40px 0; background-color: #f9f9f9;">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 30px;">Our Partners in Supporting Victims of Domestic Violence</h2>
-            <p style="text-align: center; max-width: 800px; margin: 0 auto 40px;">
-                The Hilde B Foundation is proud to collaborate with the following organizations across California, providing critical support and safe haven to survivors of domestic violence. Through our donations, we aim to strengthen their mission and contribute to lasting change.
-            </p>
-
-            <div class="partners-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
-                <div class="partner" style="flex: 1 1 300px; max-width: 300px; text-align: center;">
-                    <h3>La Casa de las Madres</h3>
-                    <p>San Francisco, CA</p>
-                    <a href="http://www.lacasa.org" target="_blank">Visit Website</a>
-                </div>
-                <div class="partner" style="flex: 1 1 300px; max-width: 300px; text-align: center;">
-                    <h3>Next Door Solutions To Domestic Violence</h3>
-                    <p>San Jose, CA</p>
-                    <a href="https://www.nextdoorsolutions.org" target="_blank">Visit Website</a>
-                </div>
-                <div class="partner" style="flex: 1 1 300px; max-width: 300px; text-align: center;">
-                    <h3>Center For Domestic Peace</h3>
-                    <p>San Rafael, CA</p>
-                    <a href="http://www.centerfordomesticpeace.org" target="_blank">Visit Website</a>
-                </div>
-                <div class="partner" style="flex: 1 1 300px; max-width: 300px; text-align: center;">
-                    <h3>STAND! For Families Free of Violence</h3>
-                    <p>Concord, CA</p>
-                    <a href="http://www.standffov.org" target="_blank">Visit Website</a>
-                </div>
-                <div class="partner" style="flex: 1 1 300px; max-width: 300px; text-align: center;">
-                    <h3>WomenShelter of Long Beach</h3>
-                    <p>Long Beach, CA</p>
-                    <a href="#" target="_blank">Visit Website</a>
-                </div>
-                <div class="partner" style="flex: 1 1 300px; max-width: 300px; text-align: center;">
-                    <h3>Marjaree Mason Center</h3>
-                    <p>Fresno, CA</p>
-                    <a href="http://www.mmcenter.org" target="_blank">Visit Website</a>
-                </div>
-            </div>
-        </div>
-    </section>
-<section id="volunteer" style="padding: 40px; background-color: #f8f8f8;">
-  <h2 style="text-align:center;">Volunteer with the Hilde B Foundation</h2>
-  <p style="text-align:center; max-width:700px; margin:auto;">Join us in our mission to eliminate domestic violence by 2035. Volunteers are at the heart of our work, making our efforts possible and expanding our impact. Here’s how you can contribute:</p>
-<div style="flex:1; min-width:250px; max-width:300px;">
-  <h3>Fundraising Volunteers</h3>
-  <p>Help develop fundraising strategies, organize campaigns, and connect with potential donors to support our critical programs.</p>
+<div class="language-buttons">
+<button onclick="switchLanguage('en')"><img src="us-flag-icon.png" alt="en flag" style="width:24px; height:auto; margin-right:10px;"></button>
+<button onclick="switchLanguage('de')"><img src="germany-flag-icon.png" alt="de flag" style="width:24px; height:auto; margin-right:10px;"></button>
+<button onclick="switchLanguage('es')"><img src="spain-flag-icon.png" alt="es flag" style="width:24px; height:auto; margin-right:10px;"></button>
+<button onclick="switchLanguage('fr')"><img src="france-flag-icon.png" alt="fr flag" style="width:24px; height:auto; margin-right:10px;"></button>
+<button onclick="switchLanguage('sv')"><img src="sweden-flag-icon.png" alt="sv flag" style="width:24px; height:auto; margin-right:10px;"></button>
+<button onclick="switchLanguage('it')"><img src="italy-flag-icon.png" alt="it flag" style="width:24px; height:auto; margin-right:10px;"></button>
 </div>
 
-<div style="flex:1; min-width:250px; max-width:300px;">
-  <h3>Outreach Ambassadors</h3>
-  <p>Represent the Hilde B Foundation in community engagement efforts, speaking at events, distributing materials, and raising awareness about domestic violence prevention.</p>
+<div id="content-en" style="display:block;">
+  <header>
+    <h1>Hilde B Foundation</h1>
+    <nav>
+      <ul>
+        <li><a href="#home">Our Mission</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#get-help">Get Help</a></li>
+        <li><a href="#donate">Donate</a></li>
+        <li><a href="#volunteer">Volunteer</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home">
+    <h2>Our Mission</h2>
+    <p>The Hilde B Foundation is committed to eliminating domestic violence from all American households by 2035. We provide resources for victims, support domestic violence shelters, and advocate for a future free of abuse.</p>
+  </section>
+
+  <section id="about">
+    <h2>About Us</h2>
+    <p>We work towards immediate aid for victims, support for shelters, and raising awareness to break the cycle of abuse.</p>
+  </section>
+
+  <section id="get-help">
+    <h2>Get Help</h2>
+    <ul>
+        <li><strong>National Domestic Violence Hotline:</strong> <a href="tel:8007997233">800-799-7233</a></li>
+        <li><strong>Text:</strong> “START” to 88788</li>
+        <li><strong>Online Chat:</strong> <a href="https://www.thehotline.org/">thehotline.org</a></li>
+    </ul>
+  </section>
+
+  <section id="donate">
+    <h2>Donate</h2>
+    <p>Your donation provides emergency shelter, counseling, and legal aid.</p>
+    <iframe src="https://donorbox.org/embed/end-domestic-violence-1?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="700px" width="100%" style="max-width: 500px; min-width: 250px;" allow="payment"></iframe>
+  </section>
+
+  <section id="volunteer">
+    <h2>Volunteer</h2>
+    <p>Join us in eliminating domestic violence by 2035. Volunteers are vital to our mission.</p>
+    <a href="https://www.volunteermatch.org/search/opp3919818.jsp" class="button" target="_blank">View Opportunities</a>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Reach out to us via LinkedIn for inquiries or partnerships.</p>
+    <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" class="button">LinkedIn</a>
+  </section>
 </div>
 
- <div class="container">
-            <h2 style="text-align: center; margin-bottom: 30px;">Become a Volunteer</h2>
-            <p style="text-align: center; max-width: 800px; margin: 0 auto 40px;">
-                We are always looking for passionate individuals who want to make a difference in the lives of those affected by domestic violence. Whether you have experience in fundraising, public relations, event planning, or simply want to help out, we have a role for you.
-            </p>
-            <p style="text-align: center; margin-bottom: 30px;">
-                <strong>Click the button below to explore current volunteer opportunities:</strong>
-            </p>
-            <div style="text-align: center;">
-                <a href="https://www.volunteermatch.org/search/opp3919818.jsp" class="button" target="_blank">View Volunteer Opportunities</a>
-            </div>
-        </div>
-</section>
+<div id="content-de" style="display:none;">
+  <header>
+    <h1>Hilde B Foundation</h1>
+    <nav>
+      <ul>
+        <li><a href="#home2">Unsere Mission</a></li>
+        <li><a href="#about2">Über Uns</a></li>
+        <li><a href="#get-help2">Hilfe finden</a></li>
+        <li><a href="#donate2">Spenden</a></li>
+        <li><a href="#volunteer2">Mitmachen</a></li>
+        <li><a href="#contact2">Kontakt</a></li>
+      </ul>
+    </nav>
+  </header>
 
-   <section id="contact">
-    <h2>Contact Us</h2>
-    <p>For inquiries, partnerships, or media requests, feel free to reach out to us via LinkedIn:</p>
-    
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" style="display: inline-block; text-decoration: none; background: #0A66C2; color: white; padding: 12px 20px; border-radius: 6px; font-weight: bold;">
-            Visit Us on LinkedIn
-        </a>
-    </div>
-</section>
+  <section id="home2">
+    <h2>Unsere Mission</h2>
+    <p>Die Hilde B Foundation setzt sich dafür ein, häusliche Gewalt bis 2035 in allen Haushalten in den USA zu beenden. Wir bieten Ressourcen für Betroffene, unterstützen Frauenhäuser und fördern Aufklärung zur Prävention von Gewalt.</p>
+  </section>
 
+  <section id="about2">
+    <h2>Über Uns</h2>
+    <p>Wir bieten direkte Hilfe, stärken bestehende Hilfsangebote und setzen auf Bildungsarbeit zur Prävention.</p>
+  </section>
 
-    <footer>
-        <p>&copy; 2025 Hilde B Foundation. All rights reserved.</p>
-    </footer>    
+  <section id="get-help2">
+    <h2>Hilfe finden</h2>
+    <ul>
+        <li><strong>Hilfetelefon "Gewalt gegen Frauen" (kostenfrei, anonym, 24/7):</strong> <a href="tel:08000116016">08000 116 016</a></li>
+        <li><strong>Online-Beratung:</strong> <a href="https://www.hilfetelefon.de">www.hilfetelefon.de</a></li>
+        <li><strong>Mehrsprachige Hilfe:</strong> Beratung in 18 Sprachen möglich</li>
+    </ul>
+  </section>
+
+  <section id="donate2">
+    <h2>Spenden</h2>
+    <p>Ihre Spende ermöglicht Notunterkünfte, Beratung und rechtliche Unterstützung.</p>
+    <iframe src="https://donorbox.org/embed/end-domestic-violence-1?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="700px" width="100%" style="max-width: 500px; min-width: 250px;" allow="payment"></iframe>
+  </section>
+
+  <section id="volunteer2">
+    <h2>Mitmachen</h2>
+    <p>Helfen Sie uns, häusliche Gewalt bis 2035 zu beenden. Freiwillige sind unser Herzstück.</p>
+    <a href="https://www.volunteermatch.org/search/opp3919818.jsp" class="button" target="_blank">View Opportunities</a>
+  </section>
+
+  <section id="contact2">
+    <h2>Kontakt</h2>
+    <p>Kontaktieren Sie uns über LinkedIn für Anfragen oder Partnerschaften.</p>
+    <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" class="button">LinkedIn</a>
+  </section>
 </div>
 
-    <!-- German Content -->
-    <div id="content-de" style="display:none;">
-<header>
-        <h1>Hilde B Foundation</h1>
-        <p>Kreisläufe durchbrechen, Zukunft gestalten</p>
-        <nav>
-            <ul>
-                <li><a href="#homei2">Unsere Mission</a></li>
-                <li><a href="#about2">Über Uns</a></li>
-                <li><a href="#get-help2">Hilfe finden</a></li>
-                <li><a href="#donate2">Spenden</a></li>
-                <li><a href="#volunteer2">Mitmachen</a></li> <!-- New Volunteer Link -->
-                <li><a href="#contact2">Kontakt</a></li>
-            </ul>
-        </nav>
-    </header>
-        <section id="home2">
-            <h2>Unsere Mission</h2>
-            <p>Die Hilde B Foundation setzt sich dafür ein, häusliche Gewalt bis 2035 in allen Haushalten in den USA zu beenden. Wir bieten Ressourcen für Betroffene, unterstützen Frauenhäuser und fördern Aufklärung zur Prävention von Gewalt.</p>
-            <a href="#get-help" class="button">Jetzt Hilfe finden</a>
-            <a href="#donate" class="button">Unsere Arbeit unterstützen</a>
-        </section>
+<div id="content-es" style="display:none;">
+  <header>
+    <h1>Hilde B Foundation</h1>
+    <nav>
+      <ul>
+        <li><a href="#home3">Nuestra Misión</a></li>
+        <li><a href="#about3">Sobre Nosotros</a></li>
+        <li><a href="#get-help3">Obtener Ayuda</a></li>
+        <li><a href="#donate3">Donar</a></li>
+        <li><a href="#volunteer3">Voluntariado</a></li>
+        <li><a href="#contact3">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
 
-        <section id="about2">
-            <h2>Über Uns</h2>
-            <p>Die Hilde B Foundation hat ihren Sitz in Santa Clara, Kalifornien, und arbeitet daran, häusliche Gewalt systematisch zu bekämpfen. Wir bieten direkte Hilfe, stärken bestehende Hilfsangebote und setzen auf Bildungsarbeit zur Prävention.</p>
-        </section>
+  <section id="home3">
+    <h2>Nuestra Misión</h2>
+    <p>La Fundación Hilde B se compromete a eliminar la violencia doméstica de todos los hogares estadounidenses para 2035. Proporcionamos recursos para las víctimas, apoyamos refugios y abogamos por un futuro sin abusos.</p>
+  </section>
 
-        <section id="get-help2">
-            <h2>Hilfe finden</h2>
-            <p>Wenn Sie oder jemand, den Sie kennen, von häuslicher Gewalt betroffen ist – es gibt Hilfe.</p>
-            <ul>
-                <li><strong>Hilfetelefon "Gewalt gegen Frauen" (kostenfrei, anonym, 24/7):</strong> <a href="tel:08000116016">08000 116 016</a></li>
-                <li><strong>Online-Beratung:</strong> <a href="https://www.hilfetelefon.de">www.hilfetelefon.de</a></li>
-                <li><strong>Mehrsprachige Hilfe:</strong> Beratung in 18 Sprachen möglich</li>
-            </ul>
-        </section>
+  <section id="about3">
+    <h2>Sobre Nosotros</h2>
+    <p>Trabajamos para brindar ayuda inmediata a las víctimas, apoyar refugios y fomentar la concienciación.</p>
+  </section>
 
-        <section id="donate2">
-            <h2>Spenden</h2>
-            <p>Unterstützen Sie unsere Arbeit gegen häusliche Gewalt. Ihre Spende hilft, Schutzräume, Beratung und Rechtsbeistand zu ermöglichen.</p>
-            <iframe src="https://donorbox.org/embed/end-domestic-violence-1?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="900px" width="100%" style="max-width: 500px; min-width: 250px; max-height:none!important" allow="payment"></iframe>
-        </section>
+  <section id="get-help3">
+    <h2>Obtener Ayuda</h2>
+    <ul>
+        <li><strong>Teléfono de Emergencia:</strong> Llama al 112 si estás en peligro inmediato.</li>
+        <li><strong>Línea de Ayuda Nacional:</strong> Marca el 016 (24/7, gratuita y confidencial)</li>
+        <li><strong>Asistencia Online:</strong> <a href="https://violenciagenero.igualdad.gob.es/">violenciagenero.igualdad.gob.es</a></li>
+    </ul>
+  </section>
 
-        <section id="volunteer2">
-            <h2>Mitmachen</h2>
-            <p>Werden Sie Teil unserer Mission und helfen Sie ehrenamtlich – ob im Fundraising, der Öffentlichkeitsarbeit oder direkt vor Ort.</p>
-            <a href="https://www.volunteermatch.org/search/opp3919818.jsp" class="button" target="_blank">Ehrenamtliche Möglichkeiten</a>
-        </section>
+  <section id="donate3">
+    <h2>Donar</h2>
+    <p>Tu donación brinda refugio de emergencia, asesoramiento y asistencia legal.</p>
+    <iframe src="https://donorbox.org/embed/end-domestic-violence-1?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="700px" width="100%" style="max-width: 500px; min-width: 250px;" allow="payment"></iframe>
+  </section>
 
-        <section id="contact2">
-            <h2>Kontakt</h2>
-            <p>Für Anfragen, Kooperationen oder Presse: Kontaktieren Sie uns über LinkedIn:</p>
-            <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" class="button">Besuchen Sie uns auf LinkedIn</a>
-        </section>
-    </div>
+  <section id="volunteer3">
+    <h2>Voluntariado</h2>
+    <p>Únete a nosotros para eliminar la violencia doméstica antes de 2035. El voluntariado es esencial.</p>
+    <a href="https://www.volunteermatch.org/search/opp3919818.jsp" class="button" target="_blank">View Opportunities</a>
+  </section>
 
-    <footer>
-        <p>&copy; 2025 Hilde B Foundation / Foundation. All rights reserved.</p>
-    </footer>
+  <section id="contact3">
+    <h2>Contacto</h2>
+    <p>Contáctanos en LinkedIn para consultas o colaboraciones.</p>
+    <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" class="button">LinkedIn</a>
+  </section>
+</div>
+
+<div id="content-fr" style="display:none;">
+  <header>
+    <h1>Hilde B Foundation</h1>
+    <nav>
+      <ul>
+        <li><a href="#home4">Notre Mission</a></li>
+        <li><a href="#about4">À Propos</a></li>
+        <li><a href="#get-help4">Obtenir de l'Aide</a></li>
+        <li><a href="#donate4">Faire un Don</a></li>
+        <li><a href="#volunteer4">Bénévolat</a></li>
+        <li><a href="#contact4">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home4">
+    <h2>Notre Mission</h2>
+    <p>La Fondation Hilde B s'engage à éliminer la violence domestique dans tous les foyers américains d'ici 2035. Nous fournissons des ressources aux victimes, soutenons les refuges et défendons un avenir sans abus.</p>
+  </section>
+
+  <section id="about4">
+    <h2>À Propos</h2>
+    <p>Nous œuvrons pour aider immédiatement les victimes, soutenir les refuges et sensibiliser le public.</p>
+  </section>
+
+  <section id="get-help4">
+    <h2>Obtenir de l'Aide</h2>
+    <ul>
+        <li><strong>Numéro d'Urgence:</strong> Appelez le 17 en cas de danger immédiat.</li>
+        <li><strong>Ligne d'Écoute Nationale:</strong> Composez le 3919 (24h/24, gratuit et anonyme)</li>
+        <li><strong>Aide en Ligne:</strong> <a href="https://www.solidaritefemmes.org/">solidaritefemmes.org</a></li>
+    </ul>
+  </section>
+
+  <section id="donate4">
+    <h2>Faire un Don</h2>
+    <p>Votre don offre un abri d'urgence, du soutien psychologique et une aide juridique.</p>
+    <iframe src="https://donorbox.org/embed/end-domestic-violence-1?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="700px" width="100%" style="max-width: 500px; min-width: 250px;" allow="payment"></iframe>
+  </section>
+
+  <section id="volunteer4">
+    <h2>Bénévolat</h2>
+    <p>Rejoignez-nous pour éliminer la violence domestique d'ici 2035. Les bénévoles sont essentiels.</p>
+    <a href="https://www.volunteermatch.org/search/opp3919818.jsp" class="button" target="_blank">View Opportunities</a>
+  </section>
+
+  <section id="contact4">
+    <h2>Contact</h2>
+    <p>Contactez-nous sur LinkedIn pour des questions ou partenariats.</p>
+    <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" class="button">LinkedIn</a>
+  </section>
+</div>
+
+<div id="content-sv" style="display:none;">
+  <header>
+    <h1>Hilde B Foundation</h1>
+    <nav>
+      <ul>
+        <li><a href="#home5">Vårt Uppdrag</a></li>
+        <li><a href="#about5">Om Oss</a></li>
+        <li><a href="#get-help5">Få Hjälp</a></li>
+        <li><a href="#donate5">Donera</a></li>
+        <li><a href="#volunteer5">Volontärarbete</a></li>
+        <li><a href="#contact5">Kontakt</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home5">
+    <h2>Vårt Uppdrag</h2>
+    <p>Hilde B-stiftelsen har som mål att eliminera våld i hemmet i alla amerikanska hushåll före 2035. Vi tillhandahåller resurser till offer, stöder skyddade boenden och förespråkar en framtid fri från våld.</p>
+  </section>
+
+  <section id="about5">
+    <h2>Om Oss</h2>
+    <p>Vi erbjuder omedelbar hjälp, stöd till skyddade boenden och utbildning för att bryta våldscykeln.</p>
+  </section>
+
+  <section id="get-help5">
+    <h2>Få Hjälp</h2>
+    <ul>
+        <li><strong>Nödnummer:</strong> Ring 112 vid omedelbar fara.</li>
+        <li><strong>Kvinnofridslinjen:</strong> 020-50 50 50 (gratis och anonym hjälp dygnet runt)</li>
+        <li><strong>Mer info:</strong> <a href="https://www.kvinnofridslinjen.se/">kvinnofridslinjen.se</a></li>
+    </ul>
+  </section>
+
+  <section id="donate5">
+    <h2>Donera</h2>
+    <p>Din donation möjliggör skydd, rådgivning och juridiskt stöd.</p>
+    <iframe src="https://donorbox.org/embed/end-domestic-violence-1?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="700px" width="100%" style="max-width: 500px; min-width: 250px;" allow="payment"></iframe>
+  </section>
+
+  <section id="volunteer5">
+    <h2>Volontärarbete</h2>
+    <p>Bli en del av vår mission att stoppa våld i hemmet innan 2035. Volontärer är avgörande.</p>
+    <a href="https://www.volunteermatch.org/search/opp3919818.jsp" class="button" target="_blank">View Opportunities</a>
+  </section>
+
+  <section id="contact5">
+    <h2>Kontakt</h2>
+    <p>Kontakta oss via LinkedIn för frågor eller samarbeten.</p>
+    <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" class="button">LinkedIn</a>
+  </section>
+</div>
+
+<div id="content-it" style="display:none;">
+  <header>
+    <h1>Hilde B Foundation</h1>
+    <nav>
+      <ul>
+        <li><a href="#home6">La Nostra Missione</a></li>
+        <li><a href="#about6">Chi Siamo</a></li>
+        <li><a href="#get-help6">Chiedi Aiuto</a></li>
+        <li><a href="#donate6">Dona</a></li>
+        <li><a href="#volunteer6">Volontariato</a></li>
+        <li><a href="#contact6">Contatto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home6">
+    <h2>La Nostra Missione</h2>
+    <p>La Fondazione Hilde B si impegna a eliminare la violenza domestica da tutte le famiglie americane entro il 2035. Forniamo risorse alle vittime, supportiamo i rifugi e promuoviamo un futuro libero dagli abusi.</p>
+  </section>
+
+  <section id="about6">
+    <h2>Chi Siamo</h2>
+    <p>Ci impegniamo a fornire aiuto immediato alle vittime, supportare i rifugi e sensibilizzare l'opinione pubblica.</p>
+  </section>
+
+  <section id="get-help6">
+    <h2>Chiedi Aiuto</h2>
+    <ul>
+        <li><strong>Numero di Emergenza:</strong> Chiama il 112 in caso di pericolo immediato.</li>
+        <li><strong>Linea di Aiuto Nazionale:</strong> 1522 (gratuito e anonimo, attivo 24h)</li>
+        <li><strong>Supporto Online:</strong> <a href="https://www.1522.eu/">1522.eu</a></li>
+    </ul>
+  </section>
+
+  <section id="donate6">
+    <h2>Dona</h2>
+    <p>La tua donazione offre rifugi, consulenza e assistenza legale.</p>
+    <iframe src="https://donorbox.org/embed/end-domestic-violence-1?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="700px" width="100%" style="max-width: 500px; min-width: 250px;" allow="payment"></iframe>
+  </section>
+
+  <section id="volunteer6">
+    <h2>Volontariato</h2>
+    <p>Unisciti a noi per eliminare la violenza domestica entro il 2035. I volontari sono fondamentali.</p>
+    <a href="https://www.volunteermatch.org/search/opp3919818.jsp" class="button" target="_blank">View Opportunities</a>
+  </section>
+
+  <section id="contact6">
+    <h2>Contatto</h2>
+    <p>Contattaci su LinkedIn per richieste o collaborazioni.</p>
+    <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" class="button">LinkedIn</a>
+  </section>
+</div>
+
+<footer style="text-align:center; padding: 20px; background-color: #701a1a; color: white;">
+  <p>&copy; 2025 Hilde B Foundation. All rights reserved.</p>
+</footer>
 </body>
 </html>
