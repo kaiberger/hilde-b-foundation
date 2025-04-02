@@ -3,11 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hilde B Foundation</title>
+    <title>Hilde B Foundation / Foundation</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        function switchLanguage(lang) {
+            document.getElementById('content-en').style.display = (lang === 'en') ? 'block' : 'none';
+            document.getElementById('content-de').style.display = (lang === 'de') ? 'block' : 'none';
+        }
+    </script>
 </head>
-<body>
+<body onload="switchLanguage('en')">
     <header>
+        <div style="display: flex; justify-content: flex-end; padding: 10px;">
+            <button onclick="switchLanguage('en')"><img src="us-flag-icon.png" alt="US Flag" style="width:24px; height:auto; margin-right:10px;"></button>
+            <button onclick="switchLanguage('de')"><img src="germany-flag-icon.png" alt="German Flag" style="width:24px; height:auto;"></button>
+        </div>
+    </header>
+
+    <!-- English Content -->
+    <div id="content-en">
+<header>
         <h1>Hilde B Foundation</h1>
         <p>Breaking the Cycle, Building a Future</p>
         <nav>
@@ -137,6 +152,68 @@
 
     <footer>
         <p>&copy; 2025 Hilde B Foundation. All rights reserved.</p>
+    </footer>    
+</div>
+
+    <!-- German Content -->
+    <div id="content-de" style="display:none;">
+<header>
+        <h1>Hilde B Foundation</h1>
+        <p>Kreisläufe durchbrechen, Zukunft gestalten</p>
+        <nav>
+            <ul>
+                <li><a href="#homei2">Unsere Mission</a></li>
+                <li><a href="#about2">Über Uns</a></li>
+                <li><a href="#get-help2">Hilfe finden</a></li>
+                <li><a href="#donate2">Spenden</a></li>
+                <li><a href="#volunteer2">Mitmachen</a></li> <!-- New Volunteer Link -->
+                <li><a href="#contact2">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+        <section id="home2">
+            <h2>Unsere Mission</h2>
+            <p>Die Hilde B Foundation setzt sich dafür ein, häusliche Gewalt bis 2035 in allen Haushalten in den USA zu beenden. Wir bieten Ressourcen für Betroffene, unterstützen Frauenhäuser und fördern Aufklärung zur Prävention von Gewalt.</p>
+            <a href="#get-help" class="button">Jetzt Hilfe finden</a>
+            <a href="#donate" class="button">Unsere Arbeit unterstützen</a>
+        </section>
+
+        <section id="about2">
+            <h2>Über Uns</h2>
+            <p>Die Hilde B Foundation hat ihren Sitz in Santa Clara, Kalifornien, und arbeitet daran, häusliche Gewalt systematisch zu bekämpfen. Wir bieten direkte Hilfe, stärken bestehende Hilfsangebote und setzen auf Bildungsarbeit zur Prävention.</p>
+        </section>
+
+        <section id="get-help2">
+            <h2>Hilfe finden</h2>
+            <p>Wenn Sie oder jemand, den Sie kennen, von häuslicher Gewalt betroffen ist – es gibt Hilfe.</p>
+            <ul>
+                <li><strong>Hilfetelefon "Gewalt gegen Frauen" (kostenfrei, anonym, 24/7):</strong> <a href="tel:08000116016">08000 116 016</a></li>
+                <li><strong>Online-Beratung:</strong> <a href="https://www.hilfetelefon.de">www.hilfetelefon.de</a></li>
+                <li><strong>Mehrsprachige Hilfe:</strong> Beratung in 18 Sprachen möglich</li>
+            </ul>
+        </section>
+
+        <section id="donate2">
+            <h2>Spenden</h2>
+            <p>Unterstützen Sie unsere Arbeit gegen häusliche Gewalt. Ihre Spende hilft, Schutzräume, Beratung und Rechtsbeistand zu ermöglichen.</p>
+            <iframe src="https://donorbox.org/embed/end-domestic-violence-1?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="900px" width="100%" style="max-width: 500px; min-width: 250px; max-height:none!important" allow="payment"></iframe>
+        </section>
+
+        <section id="volunteer2">
+            <h2>Mitmachen</h2>
+            <p>Werden Sie Teil unserer Mission und helfen Sie ehrenamtlich – ob im Fundraising, der Öffentlichkeitsarbeit oder direkt vor Ort.</p>
+            <a href="https://www.volunteermatch.org/search/opp3919818.jsp" class="button" target="_blank">Ehrenamtliche Möglichkeiten</a>
+        </section>
+
+        <section id="contact2">
+            <h2>Kontakt</h2>
+            <p>Für Anfragen, Kooperationen oder Presse: Kontaktieren Sie uns über LinkedIn:</p>
+            <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" class="button">Besuchen Sie uns auf LinkedIn</a>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Hilde B Foundation / Foundation. All rights reserved.</p>
     </footer>
 </body>
 </html>
