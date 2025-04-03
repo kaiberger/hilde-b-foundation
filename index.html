@@ -46,7 +46,7 @@
   </style>
   <script>
     function switchLanguage(lang) {
-      const langs = ['en','ca','uk','za', 'de', 'es', 'fr', 'sv', 'it'];
+      const langs = ['en','ca','uk','za', 'de', 'es','mx', 'fr', 'sv', 'it'];
       langs.forEach(l => {
         const section = document.getElementById('content-' + l);
         if (section) section.style.display = (l === lang) ? 'block' : 'none';
@@ -63,7 +63,8 @@
   <button onclick="switchLanguage('za')"><img src="https://flagcdn.com/za.svg" alt="za flag" style="width:24px; height:auto; margin-right:10px;"></button>
   <button onclick="switchLanguage('de')"><img src="germany-flag-icon.png" alt="de flag" style="width:24px; height:auto; margin-right:10px;"></button>
 <button onclick="switchLanguage('es')"><img src="spain-flag-icon.png" alt="es flag" style="width:24px; height:auto; margin-right:10px;"></button>
-<button onclick="switchLanguage('fr')"><img src="france-flag-icon.png" alt="fr flag" style="width:24px; height:auto; margin-right:10px;"></button>
+<button onclick="switchLanguage('mx')"><img src="https://flagcdn.com/mx.svg" alt="mx flag" style="width:24px; height:auto; margin-right:10px;"></button>
+  <button onclick="switchLanguage('fr')"><img src="france-flag-icon.png" alt="fr flag" style="width:24px; height:auto; margin-right:10px;"></button>
 <button onclick="switchLanguage('sv')"><img src="sweden-flag-icon.png" alt="sv flag" style="width:24px; height:auto; margin-right:10px;"></button>
 <button onclick="switchLanguage('it')"><img src="italy-flag-icon.png" alt="it flag" style="width:24px; height:auto; margin-right:10px;"></button>
  </div>
@@ -512,7 +513,82 @@
     <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" class="button">LinkedIn</a>
   </section>
 </div>
+<div id="content-mx" style="display:none;">
+  <header>
+    <img src="logo-hildeb.png" alt="Hilde B Foundation Logo" class="logo">
+    <h1>Hilde B Foundation</h1>
+    <nav>
+      <ul>
+        <li><a href="#home10">Nuestra Misión</a></li>
+        <li><a href="#about10">Sobre Nosotros</a></li>
+        <li><a href="#get-help10">Obtener Ayuda</a></li>
+        <li><a href="#partners-es">Organizaciones Colaboradoras</a></li>
+        <li><a href="#donate10">Donar</a></li>
+        <li><a href="#volunteer10">Voluntariado</a></li>
+        <li><a href="#contact10">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
 
+  <section id="home10">
+    <h2>Nuestra Misión</h2>
+    <p>La Fundación Hilde B se compromete a eliminar la violencia doméstica de todos los hogares estadounidenses para 2035. Proporcionamos recursos para las víctimas, apoyamos refugios y abogamos por un futuro sin abusos.</p>
+  </section>
+
+  <section id="about10">
+    <h2>Sobre Nosotros</h2>
+    <p>Trabajamos para brindar ayuda inmediata a las víctimas, apoyar refugios y fomentar la concienciación.</p>
+  </section>
+
+  <section id="get-help10">
+   <h2>Obtener Ayuda</h2>
+  <ul>
+    <li><strong>Emergencias:</strong> Llama al <strong>911</strong> si estás en peligro inmediato.</li>
+    <li><strong>Línea Nacional contra la Violencia:</strong> <strong>800 911 25 11</strong> (24/7, gratuita y confidencial)</li>
+    <li><strong>Sitio Oficial:</strong> <a href="https://www.gob.mx/inmujeres" target="_blank">gob.mx/inmujeres</a> — Instituto Nacional de las Mujeres</li>
+    <li><strong>Asistencia Legal y Psicológica:</strong> <a href="https://rednacionalderefugios.org.mx/" target="_blank">rednacionalderefugios.org.mx</a></li>
+  </ul>
+  </section>
+<section id="partners-mx">
+    <div class="container">
+      <h2 style="text-align: center; margin-bottom: 30px;">Nuestras organizaciones colaboradoras en España</h2>
+      <div class="partners-grid">
+      <div class="partner">
+        <h3>Red Nacional de Refugios</h3>
+        <p>National</p>
+        <a href="https://hipfunds.org/in-mexico-a-network-of-shelters-gives-women-agency-and-hope/" target="_blank">Visitar sitio web</a>
+      </div>
+      <div class="partner">
+        <h3>Las Libres</h3>
+        <p>Guanajuato</p>
+        <a href="https://borgenproject.org/gender-equality-in-mexico/" target="_blank">Visitar sitio web</a>
+      </div>
+      <div class="partner">
+        <h3>ADIVAC</h3>
+        <p>Mexico City</p>
+        <a href="https://nomoredirectory.org/mexico/" target="_blank">Visitar sitio web</a>
+      </div>
+    </div>
+    </div>
+  </section>
+  <section id="donate10">
+    <h2>Donar</h2>
+    <p>Tu donación brinda refugio de emergencia, asesoramiento y asistencia legal.</p>
+    <iframe src="https://donorbox.org/embed/end-domestic-violence-1?" name="donorbox" allowpaymentrequest="allowpaymentrequest" seamless="seamless" frameborder="0" scrolling="no" height="700px" width="100%" style="max-width: 500px; min-width: 250px;" allow="payment"></iframe>
+  </section>
+
+  <section id="volunteer3">
+    <h2>Voluntariado</h2>
+    <p>Únete a nosotros para eliminar la violencia doméstica antes de 2035. El voluntariado es esencial.</p>
+    <a href="https://www.volunteermatch.org/search/opp3919818.jsp" class="button" target="_blank">View Opportunities</a>
+  </section>
+
+  <section id="contact3">
+    <h2>Contacto</h2>
+    <p>Contáctanos en LinkedIn para consultas o colaboraciones.</p>
+    <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" class="button">LinkedIn</a>
+  </section>
+</div>
 <div id="content-fr" style="display:none;">
   <header>
     <img src="logo-hildeb.png" alt="Hilde B Foundation Logo" class="logo">
