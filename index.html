@@ -46,7 +46,7 @@
   </style>
   <script>
     function switchLanguage(lang) {
-      const langs = ['en','ca','za', 'de', 'es', 'fr', 'sv', 'it'];
+      const langs = ['en','ca','uk','za', 'de', 'es', 'fr', 'sv', 'it'];
       langs.forEach(l => {
         const section = document.getElementById('content-' + l);
         if (section) section.style.display = (l === lang) ? 'block' : 'none';
@@ -57,8 +57,11 @@
 <body onload="switchLanguage('en')">
 <div class="language-buttons">
 <button onclick="switchLanguage('en')"><img src="us-flag-icon.png" alt="en flag" style="width:24px; height:auto; margin-right:10px;"></button>
- <button onclick="switchLanguage('ca')"><img src="https://flagcdn.com/ca.svg" alt="ca flag" style="width:24px; height:auto; margin-right:10px;"></button>
-<button onclick="switchLanguage('za')"><img src="https://flagcdn.com/za.svg" alt="za flag" style="width:24px; height:auto; margin-right:10px;"></button>
+ 
+  <button onclick="switchLanguage('ca')"><img src="https://flagcdn.com/ca.svg" alt="ca flag" style="width:24px; height:auto; margin-right:10px;"></button>
+<button onclick="switchLanguage('uk')"><img src="https://flagcdn.com/uk.svg" alt="uk flag" style="width:24px; height:auto; margin-right:10px;"></button>
+<
+  <button onclick="switchLanguage('za')"><img src="https://flagcdn.com/za.svg" alt="za flag" style="width:24px; height:auto; margin-right:10px;"></button>
   <button onclick="switchLanguage('de')"><img src="germany-flag-icon.png" alt="de flag" style="width:24px; height:auto; margin-right:10px;"></button>
 <button onclick="switchLanguage('es')"><img src="spain-flag-icon.png" alt="es flag" style="width:24px; height:auto; margin-right:10px;"></button>
 <button onclick="switchLanguage('fr')"><img src="france-flag-icon.png" alt="fr flag" style="width:24px; height:auto; margin-right:10px;"></button>
@@ -137,7 +140,7 @@
   </section>
 </div>
 
-<div id="content-ca" style="display:block;">
+<div id="content-ca" style="display:none;">
   <header>
     <img src="logo-hildeb.png" alt="Hilde B Foundation Logo" class="logo">
     <h1>Hilde B Foundation</h1>
@@ -218,7 +221,7 @@
     <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" class="button">LinkedIn</a>
   </section>
 </div>
-<div id="content-uk" style="display:block;">
+<div id="content-uk" style="display:none;">
   <header>
     <img src="logo-hildeb.png" alt="Hilde B Foundation Logo" class="logo">
     <h1>Hilde B Foundation</h1>
@@ -299,7 +302,7 @@
     <a href="https://www.linkedin.com/company/hilde-b-foundation" target="_blank" class="button">LinkedIn</a>
   </section>
 </div>
-<div id="content-za" style="display:block;">
+<div id="content-za" style="display:none;">
   <header>
     <img src="logo-hildeb.png" alt="Hilde B Foundation Logo" class="logo">
     <h1>Hilde B Foundation</h1>
