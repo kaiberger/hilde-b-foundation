@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+  <title>Sign Documents</title>
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.6/dist/signature_pad.umd.min.js"></script>
+  <style>
+    canvas { border: 1px solid #ccc; border-radius: 4px; }
+    label { display: block; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Document Signing Portal – Hilde B Foundation</h1>
+  <form action="/sign" method="POST" onsubmit="return validateForm();" enctype="multipart/form-data">
+    <label for="role">Select Your Role:</label>
+    <select name="role" id="role" required>
+      {% for role in roles %}
+        <option value="{{ role }}">{{ role.replace("_", " ").title() }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="name">Full Legal Name:</label>
+    <input type="text" name="name" required>
+
+    <label for="email">Your Email Address:</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="confirm_email">Confirm Email Address:</label>
+    <input type="email" id="confirm_email" required>
+
+    <label>Draw Your Signature:</label>
+    <canvas id="signature-pad" width=400 height=150></canvas><br>
+    <button type="button" onclick="clearSignature()">Clear Signature</button><br>
+
+    <input type="hidden" name="signature" id="signature">
+
+    <label>
+      <input type="checkbox" name="consent" required>
+      I confirm that I am signing these documents willingly and understand their legal significance.
+    </label>
+
+    <br><button type="submit">Generate and Sign Documents</button>
+  </form>
+
+  <script>
+    const canvas = document.getElementById("signature-pad");
+    const signaturePad = new SignaturePad(canvas);
+
+    function clearSignature() {
+      signaturePad.clear();
+    }
+
+    function validateForm() {
+      const email = document.getElementById("email").value;
+      const confirm = document.getElementById("confirm_email").value;
+      if (email !== confirm) {
+        alert("Email addresses do not match.");
+        return false;
+      }
+
+      if (signaturePad.isEmpty()) {
+        alert("Please draw your signature.");
+        return false;
+      }
+
+      document.getElementById("signature").value = signaturePad.toDataURL("image/png");
+      return true;
+    }
+  </script>
+</body>
+</html>
