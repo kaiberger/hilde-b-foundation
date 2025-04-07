@@ -88,7 +88,11 @@ def sign():
         for page in reader.pages:
             writer.add_page(page)
 
-        writer.add_metadata(reader.metadata)
+        if reader.metadata:
+            sanitized_metadata = {
+                k: str(v) for k, v in reader.metadata.items() if isinstance(k, str)
+            }
+            writer.add_metadata(sanitized_metadata)
         writer.write(output)
         signed_pdfs.append((pdf_file, output.getvalue()))
 
