@@ -1,38 +1,44 @@
 <!doctype html>
 <html>
 <head>
-  <title>Select Role</title>
-  <!-- Load SignaturePad from CDN -->
+  <title>Sign Documents</title>
   <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.6/dist/signature_pad.umd.min.js"></script>
   <style>
-    canvas {
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
+    canvas { border: 1px solid #ccc; border-radius: 4px; }
+    label { display: block; margin-top: 12px; }
   </style>
 </head>
 <body>
-  <h1>Select Your Role</h1>
-
-  <form action="/sign" method="POST" onsubmit="return captureSignature();" enctype="multipart/form-data">
-    <label for="role">Role:</label>
-    <select name="role" id="role">
+  <h1>Document Signing Portal – Hilde B Foundation</h1>
+  <form action="/sign" method="POST" onsubmit="return validateForm();" enctype="multipart/form-data">
+    <label for="role">Select Your Role:</label>
+    <select name="role" id="role" required>
       {% for role in roles %}
         <option value="{{ role }}">{{ role.replace("_", " ").title() }}</option>
       {% endfor %}
-    </select><br><br>
+    </select>
 
-    <label for="name">Full Name:</label>
-    <input type="text" name="name" required><br><br>
+    <label for="name">Full Legal Name:</label>
+    <input type="text" name="name" required>
 
-    <label>Draw Signature:</label><br>
+    <label for="email">Your Email Address:</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="confirm_email">Confirm Email Address:</label>
+    <input type="email" id="confirm_email" required>
+
+    <label>Draw Your Signature:</label>
     <canvas id="signature-pad" width=400 height=150></canvas><br>
-    <button type="button" onclick="clearSignature()">Clear</button><br><br>
+    <button type="button" onclick="clearSignature()">Clear Signature</button><br>
 
-    <!-- Hidden input to hold base64 signature -->
     <input type="hidden" name="signature" id="signature">
 
-    <button type="submit">Generate Signed PDF</button>
+    <label>
+      <input type="checkbox" name="consent" required>
+      I confirm that I am signing these documents willingly and understand their legal significance.
+    </label>
+
+    <br><button type="submit">Generate and Sign Documents</button>
   </form>
 
   <script>
@@ -43,13 +49,20 @@
       signaturePad.clear();
     }
 
-    function captureSignature() {
-      if (signaturePad.isEmpty()) {
-        alert("Please provide a signature before submitting.");
+    function validateForm() {
+      const email = document.getElementById("email").value;
+      const confirm = document.getElementById("confirm_email").value;
+      if (email !== confirm) {
+        alert("Email addresses do not match.");
         return false;
       }
-      const dataURL = signaturePad.toDataURL("image/png");
-      document.getElementById("signature").value = dataURL;
+
+      if (signaturePad.isEmpty()) {
+        alert("Please draw your signature.");
+        return false;
+      }
+
+      document.getElementById("signature").value = signaturePad.toDataURL("image/png");
       return true;
     }
   </script>
