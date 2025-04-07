@@ -34,7 +34,7 @@ def index():
 
 @app.route("/send_code", methods=["POST"])
 def send_code():
-    data = request.json
+    data = request.get_json()
     email = data.get("email")
     if not email:
         return jsonify({"success": False, "error": "Missing email"}), 400
@@ -49,7 +49,6 @@ def send_code():
     )
 
     return jsonify({"success": True})
-
 @app.route("/verify_code", methods=["POST"])
 def verify_code():
     data = request.json
