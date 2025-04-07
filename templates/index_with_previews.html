@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+  <title>Sign Documents – Hilde B Foundation</title>
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.6/dist/signature_pad.umd.min.js"></script>
+  <style>
+    canvas { border: 1px solid #ccc; border-radius: 4px; }
+    label { display: block; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Document Signing Portal – Hilde B Foundation</h1>
+  <form action="/sign" method="POST" onsubmit="return validateForm();" enctype="multipart/form-data">
+    <label for="role">Select Your Role:</label>
+    <select name="role" id="role" required>
+      <option value="">-- Choose Role --</option>
+      <option value="volunteer">Volunteer</option>
+      <option value="donor">Donor</option>
+      <option value="board_member">Board Member</option>
+    </select>
+
+    <div id="preview-links" style="margin-top: 10px;"></div>
+
+    <label for="name">Full Legal Name:</label>
+    <input type="text" name="name" required>
+
+    <label for="email">Your Email Address:</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="confirm_email">Confirm Email Address:</label>
+    <input type="email" id="confirm_email" required>
+
+    <label>Draw Your Signature:</label>
+    <canvas id="signature-pad" width=400 height=150></canvas><br>
+    <button type="button" onclick="clearSignature()">Clear Signature</button><br>
+
+    <input type="hidden" name="signature" id="signature">
+
+    <label>
+      <input type="checkbox" name="consent" required>
+      I confirm that I have reviewed the documents above and am signing willingly.
+    </label>
+
+    <br><button type="submit">Generate and Sign Documents</button>
+  </form>
+
+  <script>
+    const canvas = document.getElementById("signature-pad");
+    const signaturePad = new SignaturePad(canvas);
+
+    function clearSignature() {
+      signaturePad.clear();
+    }
+
+    function validateForm() {
+      const email = document.getElementById("email").value;
+      const confirm = document.getElementById("confirm_email").value;
+      if (email !== confirm) {
+        alert("Email addresses do not match.");
+        return false;
+      }
+
+      if (signaturePad.isEmpty()) {
+        alert("Please draw your signature.");
+        return false;
+      }
+
+      document.getElementById("signature").value = signaturePad.toDataURL("image/png");
+      return true;
+    }
+
+    const roleDocs = {
+      "volunteer": ["volunteer_agreement.pdf", "media_release.pdf", "nda.pdf"],
+      "donor": ["donor_agreement.pdf", "privacy_policy.pdf", "conflict_policy.pdf"],
+      "board_member": ["board_member_agreement.pdf", "nda.pdf", "conflict_policy.pdf"]
+    };
+
+    document.querySelector("#role").addEventListener("change", function () {
+      const role = this.value;
+      const container = document.getElementById("preview-links");
+      container.innerHTML = "";
+      if (roleDocs[role]) {
+        roleDocs[role].forEach(doc => {
+          const link = document.createElement("a");
+          link.href = `/static/pdf_templates/${doc}`;
+          link.textContent = `Preview ${doc.replace("_", " ").replace(".pdf", "")}`;
+          link.target = "_blank";
+          link.style.display = "block";
+          container.appendChild(link);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
