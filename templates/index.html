@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>Sign Documents</title>
+  <title>Sign Documents – Hilde B Foundation</title>
   <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.6/dist/signature_pad.umd.min.js"></script>
   <style>
     canvas { border: 1px solid #ccc; border-radius: 4px; }
@@ -13,10 +13,13 @@
   <form action="/sign" method="POST" onsubmit="return validateForm();" enctype="multipart/form-data">
     <label for="role">Select Your Role:</label>
     <select name="role" id="role" required>
-      {% for role in roles %}
-        <option value="{{ role }}">{{ role.replace("_", " ").title() }}</option>
-      {% endfor %}
+      <option value="">-- Choose Role --</option>
+      <option value="volunteer">Volunteer</option>
+      <option value="donor">Donor</option>
+      <option value="board_member">Board Member</option>
     </select>
+
+    <div id="preview-links" style="margin-top: 10px;"></div>
 
     <label for="name">Full Legal Name:</label>
     <input type="text" name="name" required>
@@ -35,7 +38,7 @@
 
     <label>
       <input type="checkbox" name="consent" required>
-      I confirm that I am signing these documents willingly and understand their legal significance.
+      I confirm that I have reviewed the documents above and am signing willingly.
     </label>
 
     <br><button type="submit">Generate and Sign Documents</button>
@@ -65,6 +68,28 @@
       document.getElementById("signature").value = signaturePad.toDataURL("image/png");
       return true;
     }
+
+    const roleDocs = {
+      "volunteer": ["volunteer_agreement.pdf", "media_release.pdf", "nda.pdf"],
+      "donor": ["donor_agreement.pdf", "privacy_policy.pdf", "conflict_policy.pdf"],
+      "board_member": ["board_member_agreement.pdf", "nda.pdf", "conflict_policy.pdf"]
+    };
+
+    document.querySelector("#role").addEventListener("change", function () {
+      const role = this.value;
+      const container = document.getElementById("preview-links");
+      container.innerHTML = "";
+      if (roleDocs[role]) {
+        roleDocs[role].forEach(doc => {
+          const link = document.createElement("a");
+          link.href = `/static/pdf_templates/${doc}`;
+          link.textContent = `Preview ${doc.replace("_", " ").replace(".pdf", "")}`;
+          link.target = "_blank";
+          link.style.display = "block";
+          container.appendChild(link);
+        });
+      }
+    });
   </script>
 </body>
 </html>
