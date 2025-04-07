@@ -80,7 +80,7 @@ def sign():
 
     signed_pdfs = []
     for pdf_file in roles_to_pdfs.get(role, []):
-        pdf_path = f"pdf_templates/{pdf_file}"
+        pdf_path = f"static/pdf_templates/{pdf_file}"
         output = io.BytesIO()
         reader = PdfReader(pdf_path)
         writer = PdfWriter()
