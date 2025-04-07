@@ -1,71 +1,66 @@
+import os
 from flask import Flask, render_template, request, send_file
-import io, os
-from PyPDF2 import PdfReader, PdfWriter
+from io import BytesIO
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-from datetime import datetime
-import base64
-import tempfile
+from reportlab.lib.pagesizes import LETTER
+import smtplib
+from email.message import EmailMessage
 
 app = Flask(__name__)
 
-ROLE_DOCS = {
-    "volunteer": ["volunteer_agreement.pdf", "privacy_policy.pdf", "nda.pdf"],
-    "donor": ["donor_agreement.pdf", "privacy_policy.pdf", "media_release.pdf"],
-    "board": ["board_member_agreement.pdf", "conflict_policy.pdf", "expense_policy.pdf", "nda.pdf"],
-    "minor_volunteer": ["volunteer_agreement.pdf", "media_release.pdf"],
-    "sponsored_project": ["fiscal_sponsorship.pdf", "privacy_policy.pdf", "nda.pdf"]
+ROLES = {
+    "volunteer": ["volunteer_agreement", "media_release", "nda"],
+    "donor": ["donor_agreement", "privacy_policy", "conflict_policy"],
+    "board_member": ["board_member_agreement", "nda", "conflict_policy"],
 }
+
+PDF_DIR = "pdf_templates"
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html", roles=list(ROLE_DOCS.keys()))
+    return render_template("index.html", roles=ROLES.keys())
 
 @app.route("/sign", methods=["POST"])
-def sign():
+def sign_documents():
     role = request.form["role"]
     name = request.form["name"]
-    signature_data = request.form["signature"]
-    date_str = datetime.today().strftime("%Y-%m-%d")
+    email = request.form["email"]
+    signature = request.form["signature"]
 
-    # Decode the base64 PNG signature
-    if signature_data.startswith("data:image/png;base64,"):
-        signature_data = signature_data.replace("data:image/png;base64,", "")
-    signature_bytes = base64.b64decode(signature_data)
+    pdf_output = BytesIO()
+    pdf = canvas.Canvas(pdf_output, pagesize=LETTER)
 
-    # Write the signature to a temporary file
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmp_sig:
-        tmp_sig.write(signature_bytes)
-        tmp_sig_path = tmp_sig.name
+    for doc in ROLES[role]:
+        path = os.path.join(PDF_DIR, f"{doc}.pdf")
+        if os.path.exists(path):
+            pdf.showPage()
+            pdf.setFont("Helvetica", 12)
+            pdf.drawString(50, 700, f"Signed by: {name}")
+            pdf.drawString(50, 685, f"Signature: {signature}")
+            pdf.drawString(50, 670, f"Document: {doc.replace('_', ' ').title()}")
 
-    packet = PdfWriter()
+    pdf.showPage()
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.drawString(50, 700, f"Confirmation of Signature for Role: {role.title()}")
+    pdf.drawString(50, 685, f"Name: {name}")
+    pdf.drawString(50, 670, f"Email: {email}")
+    pdf.drawString(50, 655, f"Signature: {signature}")
+    pdf.save()
 
-    for pdf_file in ROLE_DOCS.get(role, []):
-        filepath = f"pdf_templates/{pdf_file}"
-        reader = PdfReader(filepath)
+    pdf_output.seek(0)
+    send_confirmation_email(name, email, pdf_output)
 
-        for page in reader.pages:
-            # Create an overlay with the signature
-            packet_buf = io.BytesIO()
-            c = canvas.Canvas(packet_buf, pagesize=letter)
-            c.drawImage(tmp_sig_path, 400, 50, width=150, height=50, mask='auto')
-            c.drawString(400, 40, f"Signed by {name} on {date_str}")
-            c.save()
-            packet_buf.seek(0)
+    return "Your documents were signed and emailed successfully!"
 
-            overlay_reader = PdfReader(packet_buf)
-            overlay_page = overlay_reader.pages[0]
-            page.merge_page(overlay_page)
-            packet.add_page(page)
+def send_confirmation_email(name, recipient_email, pdf_data):
+    msg = EmailMessage()
+    msg["Subject"] = f"Signed Documents - Hilde B Foundation"
+    msg["From"] = os.environ["EMAIL_ADDRESS"]
+    msg["To"] = recipient_email
+    msg["Cc"] = "contact@hildebfoundation.org"
+    msg.set_content(f"Dear {name},\n\nAttached are your signed documents.\n\nSincerely,\nThe Hilde B Foundation")
 
-    # Clean up the temp file
-    os.unlink(tmp_sig_path)
+    msg.add_attachment(pdf_data.read(), maintype="application", subtype="pdf", filename="signed_documents.pdf")
 
-    output = io.BytesIO()
-    packet.write(output)
-    output.seek(0)
-
-    return send_file(output, as_attachment=True, download_name=f"signed_{role}_{name}.pdf", mimetype="application/pdf")
-
-if __name__ == "__main__":
-    app.run(debug=True)
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(os.environ["
