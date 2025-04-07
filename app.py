@@ -96,7 +96,14 @@ def sign():
         signature_image.save(tmp_sig_path)
 
     # Load foundation signature
-    foundation_sig_path = "static/foundation_signature/signature.png"
+    from PIL import Image
+    foundation_sig_raw = Image.open("static/foundation_signature/signature.png")
+    foundation_sig = Image.new("RGB", foundation_sig_raw.size, (255, 255, 255))
+    foundation_sig.paste(foundation_sig_raw, mask=foundation_sig_raw.split()[3] if foundation_sig_raw.mode == "RGBA" else None)
+
+    import tempfile
+    foundation_sig_path = tempfile.NamedTemporaryFile(delete=False, suffix=".png").name
+    foundation_sig.save(foundation_sig_path)
     date_str = datetime.now().strftime("%Y-%m-%d")
     signed_pdfs = []
 
