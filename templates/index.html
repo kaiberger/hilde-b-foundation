@@ -104,7 +104,7 @@
         }
       }, 1000);
 
-      fetch("/send-code", {
+      fetch("/send_code", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ email })
@@ -115,7 +115,7 @@
       const email = document.getElementById("email").value;
       const code = document.getElementById("code").value;
 
-      fetch("/verify-code", {
+      fetch("/verify_code", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ email, code })
