@@ -1,1 +1,25 @@
+<!doctype html>
+<html>
+<head>
+  <title>Select Role</title>
+</head>
+<body>
+  <h1>Select Your Role</h1>
+  <form action="/sign" method="POST">
+    <label for="role">Role:</label>
+    <select name="role" id="role">
+      {% for role in roles %}
+        <option value="{{ role }}">{{ role.replace("_", " ").title() }}</option>
+      {% endfor %}
+    </select><br><br>
 
+    <label for="name">Full Name:</label>
+    <input type="text" name="name" required><br><br>
+
+    <label for="signature">Type Signature:</label>
+    <input type="text" name="signature" required><br><br>
+
+    <button type="submit">Generate Signed PDF</button>
+  </form>
+</body>
+</html>
