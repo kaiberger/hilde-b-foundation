@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+  <title>Secure Document Signing – Hilde B Foundation</title>
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.6/dist/signature_pad.umd.min.js"></script>
+  <style>
+    canvas { border: 1px solid #ccc; border-radius: 4px; display: none; }
+    label { display: block; margin-top: 12px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Secure Document Signing – Hilde B Foundation</h1>
+
+  <form id="signForm" action="/sign" method="POST" onsubmit="return validateForm();" enctype="multipart/form-data">
+    <label for="role">Select Your Role:</label>
+    <select name="role" id="role" required>
+      <option value="">-- Choose Role --</option>
+      <option value="volunteer">Volunteer</option>
+      <option value="donor">Donor</option>
+      <option value="board_member">Board Member</option>
+    </select>
+
+    <div id="preview-links" style="margin-top: 10px;"></div>
+
+    <label for="name">Full Legal Name:</label>
+    <input type="text" name="name" required>
+
+    <label for="email">Your Email Address:</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="confirm_email">Confirm Email Address:</label>
+    <input type="email" id="confirm_email" required>
+
+    <button type="button" onclick="sendCode()" id="sendCodeBtn">Send Verification Code</button>
+    <span id="resendTimer" class="hidden">(Resend available in <span id="timer">30</span>s)</span>
+    <br><br>
+
+    <label for="code">Enter Verification Code:</label>
+    <input type="text" id="code" maxlength="6">
+    <button type="button" onclick="verifyCode()">Verify Code</button>
+
+    <p id="verificationStatus" style="color: green;"></p>
+
+    <label class="hidden" id="signatureLabel">Draw Your Signature:</label>
+    <canvas id="signature-pad" width=400 height=150></canvas><br>
+    <button type="button" id="clearBtn" class="hidden" onclick="clearSignature()">Clear Signature</button><br>
+
+    <input type="hidden" name="signature" id="signature">
+    <input type="hidden" name="verified" id="verified" value="false">
+
+    <label class="hidden" id="consentLabel">
+      <input type="checkbox" name="consent" required>
+      I confirm that I have reviewed the documents above and am signing willingly.
+    </label>
+
+    <br><button type="submit" class="hidden" id="submitBtn">Generate and Sign Documents</button>
+  </form>
+
+  <script>
+    const signaturePad = new SignaturePad(document.getElementById("signature-pad"));
+
+    function clearSignature() {
+      signaturePad.clear();
+    }
+
+    function validateForm() {
+      const email = document.getElementById("email").value;
+      const confirm = document.getElementById("confirm_email").value;
+      if (email !== confirm) {
+        alert("Email addresses do not match.");
+        return false;
+      }
+
+      if (!signaturePad || signaturePad.isEmpty()) {
+        alert("Please draw your signature.");
+        return false;
+      }
+
+      document.getElementById("signature").value = signaturePad.toDataURL("image/png");
+      return true;
+    }
+
+    let timerInterval;
+    function sendCode() {
+      const email = document.getElementById("email").value;
+      if (!email) {
+        alert("Please enter your email first.");
+        return;
+      }
+
+      document.getElementById("sendCodeBtn").disabled = true;
+      document.getElementById("resendTimer").classList.remove("hidden");
+      let timeLeft = 30;
+      document.getElementById("timer").innerText = timeLeft;
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").innerText = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById("resendTimer").classList.add("hidden");
+          document.getElementById("sendCodeBtn").disabled = false;
+        }
+      }, 1000);
+
+      fetch("/send-code", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ email })
+      });
+    }
+
+    function verifyCode() {
+      const email = document.getElementById("email").value;
+      const code = document.getElementById("code").value;
+
+      fetch("/verify-code", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ email, code })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById("verificationStatus").innerText = "Email verified successfully.";
+          document.getElementById("verified").value = "true";
+          unlockForm();
+        } else {
+          alert("Verification failed. Please check the code and try again.");
+        }
+      });
+    }
+
+    function unlockForm() {
+      document.getElementById("signature-pad").style.display = "block";
+      document.getElementById("submitBtn").classList.remove("hidden");
+      document.getElementById("clearBtn").classList.remove("hidden");
+      document.getElementById("consentLabel").classList.remove("hidden");
+      document.getElementById("signatureLabel").classList.remove("hidden");
+    }
+
+    const roleDocs = {
+      "volunteer": ["volunteer_agreement.pdf", "media_release.pdf", "nda.pdf"],
+      "donor": ["donor_agreement.pdf", "privacy_policy.pdf", "conflict_policy.pdf"],
+      "board_member": ["board_member_agreement.pdf", "nda.pdf", "conflict_policy.pdf", "expense_policy.pdf"]
+    };
+
+    document.querySelector("#role").addEventListener("change", function () {
+      const role = this.value;
+      const container = document.getElementById("preview-links");
+      container.innerHTML = "";
+      if (roleDocs[role]) {
+        roleDocs[role].forEach(doc => {
+          const link = document.createElement("a");
+          link.href = `/static/pdf_templates/${doc}`;
+          link.textContent = `Preview ${doc.replace("_", " ").replace(".pdf", "")}`;
+          link.target = "_blank";
+          link.style.display = "block";
+          container.appendChild(link);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
