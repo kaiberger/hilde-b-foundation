@@ -85,7 +85,9 @@ def sign():
     role = request.form["role"]
     signature_data = request.form["signature"]
 
-    signature_image = Image.open(io.BytesIO(base64.b64decode(signature_data.split(",")[1])))
+    original = Image.open(io.BytesIO(base64.b64decode(signature_data.split(",")[1])))
+    signature_image = Image.new("RGB", original.size, (255, 255, 255))
+    signature_image.paste(original, mask=original.split()[3] if original.mode == "RGBA" else None)
     with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmp_sig_file:
         tmp_sig_path = tmp_sig_file.name
         signature_image.save(tmp_sig_path)
