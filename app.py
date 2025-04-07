@@ -96,7 +96,7 @@ def sign():
         signature_image.save(tmp_sig_path)
 
     # Load foundation signature
-    foundation_sig_path = "static/foundation_signature/foundation_signature.png"
+    foundation_sig_path = "static/foundation_signature/signature.png"
     date_str = datetime.now().strftime("%Y-%m-%d")
     signed_pdfs = []
 
