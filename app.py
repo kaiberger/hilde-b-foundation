@@ -63,4 +63,5 @@ def send_confirmation_email(name, recipient_email, pdf_data):
     msg.add_attachment(pdf_data.read(), maintype="application", subtype="pdf", filename="signed_documents.pdf")
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-        smtp.login(os.environ["
+        smtp.login(os.environ["EMAIL_ADDRESS"], os.environ["EMAIL_PASSWORD"])
+        smtp.send_message(msg)
