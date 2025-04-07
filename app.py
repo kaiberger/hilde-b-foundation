@@ -68,6 +68,7 @@ def verify_code():
     return jsonify({"success": True})
 
 
+
 @app.route("/sign", methods=["POST"])
 def sign():
     import io
@@ -85,13 +86,17 @@ def sign():
     role = request.form["role"]
     signature_data = request.form["signature"]
 
+    # Decode and flatten user's signature
     original = Image.open(io.BytesIO(base64.b64decode(signature_data.split(",")[1])))
     signature_image = Image.new("RGB", original.size, (255, 255, 255))
     signature_image.paste(original, mask=original.split()[3] if original.mode == "RGBA" else None)
+
     with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmp_sig_file:
         tmp_sig_path = tmp_sig_file.name
         signature_image.save(tmp_sig_path)
 
+    # Load foundation signature
+    foundation_sig_path = "static/foundation_signature/foundation_signature.png"
     date_str = datetime.now().strftime("%Y-%m-%d")
     signed_pdfs = []
 
@@ -103,9 +108,16 @@ def sign():
         for i, page in enumerate(reader.pages):
             packet = io.BytesIO()
             c = canvas.Canvas(packet, pagesize=letter)
-            c.drawString(72, 40, f"Signed by: {name}")
-            c.drawString(72, 25, f"Date: {date_str}")
-            c.drawImage(tmp_sig_path, 400, 20, width=150, height=50)
+
+            # Left side: foundation signature
+            c.drawString(72, 90, "Signed on behalf of the Hilde B Foundation")
+            c.drawImage(foundation_sig_path, 72, 95, width=150, height=50)
+
+            # Right side: user signature
+            c.drawString(400, 90, f"Signed by: {name}")
+            c.drawString(400, 75, f"Date: {date_str}")
+            c.drawImage(tmp_sig_path, 400, 95, width=150, height=50)
+
             c.save()
             packet.seek(0)
             overlay_pdf = PdfReader(packet)
@@ -117,7 +129,6 @@ def sign():
         output.seek(0)
         signed_pdfs.append((f"signed_{filename}", output.read()))
 
-    # Send emails with attachments
     send_email(
         to=email,
         subject="Your Signed Documents",
@@ -132,6 +143,7 @@ def sign():
     )
 
     return "Documents signed and emailed!"
+
 def send_email(to, subject, body, attachments=None):
     msg = MIMEMultipart()
     msg["From"] = EMAIL_ADDRESS
