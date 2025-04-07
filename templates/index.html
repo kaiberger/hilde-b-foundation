@@ -2,10 +2,19 @@
 <html>
 <head>
   <title>Select Role</title>
+  <!-- Load SignaturePad from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.6/dist/signature_pad.umd.min.js"></script>
+  <style>
+    canvas {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
   <h1>Select Your Role</h1>
-  <form action="/sign" method="POST">
+
+  <form action="/sign" method="POST" onsubmit="return captureSignature();" enctype="multipart/form-data">
     <label for="role">Role:</label>
     <select name="role" id="role">
       {% for role in roles %}
@@ -16,10 +25,33 @@
     <label for="name">Full Name:</label>
     <input type="text" name="name" required><br><br>
 
-    <label for="signature">Type Signature:</label>
-    <input type="text" name="signature" required><br><br>
+    <label>Draw Signature:</label><br>
+    <canvas id="signature-pad" width=400 height=150></canvas><br>
+    <button type="button" onclick="clearSignature()">Clear</button><br><br>
+
+    <!-- Hidden input to hold base64 signature -->
+    <input type="hidden" name="signature" id="signature">
 
     <button type="submit">Generate Signed PDF</button>
   </form>
+
+  <script>
+    const canvas = document.getElementById("signature-pad");
+    const signaturePad = new SignaturePad(canvas);
+
+    function clearSignature() {
+      signaturePad.clear();
+    }
+
+    function captureSignature() {
+      if (signaturePad.isEmpty()) {
+        alert("Please provide a signature before submitting.");
+        return false;
+      }
+      const dataURL = signaturePad.toDataURL("image/png");
+      document.getElementById("signature").value = dataURL;
+      return true;
+    }
+  </script>
 </body>
 </html>
