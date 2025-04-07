@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, send_file
-import io
+import io, os
 from PyPDF2 import PdfReader, PdfWriter
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from datetime import datetime
 import base64
+import tempfile
 
 app = Flask(__name__)
 
@@ -27,10 +28,15 @@ def sign():
     signature_data = request.form["signature"]
     date_str = datetime.today().strftime("%Y-%m-%d")
 
-    # Decode base64 signature image
+    # Decode the base64 PNG signature
     if signature_data.startswith("data:image/png;base64,"):
         signature_data = signature_data.replace("data:image/png;base64,", "")
     signature_bytes = base64.b64decode(signature_data)
+
+    # Write the signature to a temporary file
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmp_sig:
+        tmp_sig.write(signature_bytes)
+        tmp_sig_path = tmp_sig.name
 
     packet = PdfWriter()
 
@@ -42,16 +48,18 @@ def sign():
             # Create an overlay with the signature
             packet_buf = io.BytesIO()
             c = canvas.Canvas(packet_buf, pagesize=letter)
-            c.drawImage(io.BytesIO(signature_bytes), 400, 50, width=150, height=50, mask='auto')
+            c.drawImage(tmp_sig_path, 400, 50, width=150, height=50, mask='auto')
             c.drawString(400, 40, f"Signed by {name} on {date_str}")
             c.save()
             packet_buf.seek(0)
 
-            # Merge overlay
             overlay_reader = PdfReader(packet_buf)
             overlay_page = overlay_reader.pages[0]
             page.merge_page(overlay_page)
             packet.add_page(page)
+
+    # Clean up the temp file
+    os.unlink(tmp_sig_path)
 
     output = io.BytesIO()
     packet.write(output)
