@@ -1,95 +1,74 @@
 <!doctype html>
 <html>
 <head>
-  <title>Sign Documents – Hilde B Foundation</title>
-  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.6/dist/signature_pad.umd.min.js"></script>
-  <style>
-    canvas { border: 1px solid #ccc; border-radius: 4px; }
-    label { display: block; margin-top: 12px; }
-  </style>
+  <title>Select Role</title>
 </head>
 <body>
-  <h1>Document Signing Portal – Hilde B Foundation</h1>
-  <form action="/sign" method="POST" onsubmit="return validateForm();" enctype="multipart/form-data">
+  <h1>Review & Sign Your Documents</h1>
+
+  <form action="/sign" method="POST">
     <label for="role">Select Your Role:</label>
-    <select name="role" id="role" required>
-      <option value="">-- Choose Role --</option>
-      <option value="volunteer">Volunteer</option>
-      <option value="donor">Donor</option>
-      <option value="board_member">Board Member</option>
+    <select name="role" id="role" onchange="updatePreview()">
+      {% for role in roles %}
+        <option value="{{ role }}">{{ role.replace("_", " ").title() }}</option>
+      {% endfor %}
     </select>
 
-    <div id="preview-links" style="margin-top: 10px;"></div>
+    <button type="button" onclick="previewPDFs()">Preview Documents</button>
+    <br><br>
 
     <label for="name">Full Legal Name:</label>
-    <input type="text" name="name" required>
+    <input type="text" name="name" required><br><br>
 
-    <label for="email">Your Email Address:</label>
-    <input type="email" name="email" id="email" required>
+    <label for="email">Email Address:</label>
+    <input type="email" name="email" required><br><br>
 
-    <label for="confirm_email">Confirm Email Address:</label>
-    <input type="email" id="confirm_email" required>
+    <label for="signature">Type Signature:</label>
+    <input type="text" name="signature" required><br><br>
 
-    <label>Draw Your Signature:</label>
-    <canvas id="signature-pad" width=400 height=150></canvas><br>
-    <button type="button" onclick="clearSignature()">Clear Signature</button><br>
+    <p>
+      By signing, you confirm that you are authorized to represent this role and agree to the terms of the selected documents.
+      You affirm that your name and signature are legally binding, and that the email address provided is under your control.
+    </p>
 
-    <input type="hidden" name="signature" id="signature">
-
-    <label>
-      <input type="checkbox" name="consent" required>
-      I confirm that I have reviewed the documents above and am signing willingly.
-    </label>
-
-    <br><button type="submit">Generate and Sign Documents</button>
+    <input type="submit" value="Sign and Submit">
   </form>
 
   <script>
-    const canvas = document.getElementById("signature-pad");
-    const signaturePad = new SignaturePad(canvas);
-
-    function clearSignature() {
-      signaturePad.clear();
-    }
-
-    function validateForm() {
-      const email = document.getElementById("email").value;
-      const confirm = document.getElementById("confirm_email").value;
-      if (email !== confirm) {
-        alert("Email addresses do not match.");
-        return false;
-      }
-
-      if (signaturePad.isEmpty()) {
-        alert("Please draw your signature.");
-        return false;
-      }
-
-      document.getElementById("signature").value = signaturePad.toDataURL("image/png");
-      return true;
-    }
-
-    const roleDocs = {
-      "volunteer": ["volunteer_agreement.pdf", "media_release.pdf", "nda.pdf"],
-      "donor": ["donor_agreement.pdf", "privacy_policy.pdf", "conflict_policy.pdf"],
-      "board_member": ["board_member_agreement.pdf", "nda.pdf", "conflict_policy.pdf"]
+    const roleToPDFs = {
+      "volunteer": [
+        "volunteer_agreement.pdf",
+        "nda.pdf",
+        "privacy_policy.pdf"
+      ],
+      "donor": [
+        "donor_agreement.pdf",
+        "media_release.pdf",
+        "privacy_policy.pdf"
+      ],
+      "board_member": [
+        "board_member_agreement.pdf",
+        "conflict_policy.pdf",
+        "nda.pdf",
+        "expense_policy.pdf"
+      ]
     };
 
-    document.querySelector("#role").addEventListener("change", function () {
-      const role = this.value;
-      const container = document.getElementById("preview-links");
-      container.innerHTML = "";
-      if (roleDocs[role]) {
-        roleDocs[role].forEach(doc => {
-          const link = document.createElement("a");
-          link.href = `/static/pdf_templates/${doc}`;
-          link.textContent = `Preview ${doc.replace("_", " ").replace(".pdf", "")}`;
-          link.target = "_blank";
-          link.style.display = "block";
-          container.appendChild(link);
-        });
-      }
-    });
+    function updatePreview() {
+      const role = document.getElementById("role").value;
+      console.log("Selected role:", role);
+    }
+
+    function previewPDFs() {
+      const role = document.getElementById("role").value;
+      const container = window.open("", "_blank");
+      const files = roleToPDFs[role] || [];
+      container.document.write("<h2>Documents for Preview:</h2>");
+      files.forEach(file => {
+        const path = `/static/pdf_templates/${file}`;
+        container.document.write(`<p><a href="${path}" target="_blank">${file}</a></p>`);
+      });
+    }
   </script>
 </body>
 </html>
