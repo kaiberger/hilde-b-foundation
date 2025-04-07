@@ -1,106 +1,99 @@
-
 import os
-import smtplib
-import random
-import string
 import io
+import random
+import time
+import smtplib
 from flask import Flask, render_template, request, send_file, jsonify
 from werkzeug.utils import secure_filename
 from PyPDF2 import PdfReader, PdfWriter
 from email.mime.multipart import MIMEMultipart
-from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
-from datetime import datetime
+from email.mime.application import MIMEApplication
 from PIL import Image
 import base64
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', 'devkey')
 
-EMAIL_ADDRESS = os.environ.get('EMAIL_ADDRESS')
-EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
-VERIFICATION_CODES = {}
-
-ROLE_DOCUMENTS = {
-    "volunteer": [
-        "volunteer_agreement.pdf",
-        "privacy_policy.pdf",
-        "conflict_policy.pdf",
-        "media_release.pdf"
-    ],
-    "donor": [
-        "donor_agreement.pdf",
-        "privacy_policy.pdf"
-    ],
-    "board_member": [
-        "board_member_agreement.pdf",
-        "conflict_policy.pdf",
-        "privacy_policy.pdf",
-        "media_release.pdf"
-    ],
-    "fiscal_partner": [
-        "fiscal_sponsorship.pdf",
-        "privacy_policy.pdf"
-    ]
+roles_to_pdfs = {
+    "volunteer": ["volunteer_agreement.pdf", "privacy_policy.pdf", "conflict_policy.pdf"],
+    "donor": ["donor_agreement.pdf", "privacy_policy.pdf", "nda.pdf"],
+    "board_member": ["board_member_agreement.pdf", "privacy_policy.pdf", "conflict_policy.pdf", "nda.pdf"],
+    "media_contributor": ["media_release.pdf", "privacy_policy.pdf", "nda.pdf"],
+    "fiscal_sponsor": ["fiscal_sponsorship.pdf", "privacy_policy.pdf"],
+    "partner": ["mou.pdf", "privacy_policy.pdf"],
 }
 
-@app.route("/")
+verification_codes = {}
+
+@app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html", roles=ROLE_DOCUMENTS.keys())
+    return render_template("index.html", roles=roles_to_pdfs.keys())
 
-@app.route("/send-code", methods=["POST"])
+@app.route("/send_code", methods=["POST"])
 def send_code():
-    email = request.form["email"]
-    code = "".join(random.choices(string.digits, k=6))
-    VERIFICATION_CODES[email] = {"code": code, "timestamp": datetime.now()}
-    send_email(email, "Your Verification Code", f"Your code is: {code}")
-    return "Code sent"
+    data = request.json
+    email = data.get("email")
+    if not email:
+        return jsonify({"success": False, "error": "Missing email"}), 400
 
-@app.route("/verify-code", methods=["POST"])
+    code = str(random.randint(100000, 999999))
+    verification_codes[email] = {"code": code, "timestamp": time.time()}
+
+    send_email(
+        to=email,
+        subject="Your Hilde B Foundation Verification Code",
+        body=f"Your verification code is: {code}\n\nThis code is valid for 5 minutes."
+    )
+
+    return jsonify({"success": True})
+
+@app.route("/verify_code", methods=["POST"])
 def verify_code():
-    email = request.form["email"]
-    entered_code = request.form["code"]
-    if email in VERIFICATION_CODES:
-        correct_code = VERIFICATION_CODES[email]["code"]
-        if entered_code == correct_code:
-            return "verified"
-    return "invalid"
+    data = request.json
+    email = data.get("email")
+    code = data.get("code")
+
+    if email not in verification_codes:
+        return jsonify({"success": False, "error": "No code requested for this email"}), 400
+
+    entry = verification_codes[email]
+    if time.time() - entry["timestamp"] > 300:
+        return jsonify({"success": False, "error": "Code expired"}), 400
+
+    if entry["code"] != code:
+        return jsonify({"success": False, "error": "Incorrect code"}), 400
+
+    return jsonify({"success": True})
 
 @app.route("/sign", methods=["POST"])
-def sign_documents():
+def sign():
     name = request.form["name"]
     email = request.form["email"]
     role = request.form["role"]
-    signature_data_url = request.form["signature"]
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    signature_data = request.form["signature"]
 
-    signature_data = signature_data_url.split(",")[1]
-    signature_bytes = base64.b64decode(signature_data)
-    signature_image = Image.open(io.BytesIO(signature_bytes)).convert("RGB")
+    signature_image = Image.open(io.BytesIO(base64.b64decode(signature_data.split(",")[1])))
+    signature_path = "/tmp/signature.png"
+    signature_image.save(signature_path)
 
     signed_pdfs = []
+    for pdf_file in roles_to_pdfs.get(role, []):
+        pdf_path = f"pdf_templates/{pdf_file}"
+        output = io.BytesIO()
+        reader = PdfReader(pdf_path)
+        writer = PdfWriter()
 
-    for filename in ROLE_DOCUMENTS[role]:
-        template_path = f"pdf_templates/{filename}"
-        if not os.path.exists(template_path):
-            continue
+        for page in reader.pages:
+            writer.add_page(page)
 
-        with open(template_path, "rb") as file:
-            reader = PdfReader(file)
-            writer = PdfWriter()
-            for page in reader.pages:
-                writer.add_page(page)
-            output = io.BytesIO()
-            writer.write(output)
-            output.seek(0)
-            signed_pdfs.append((filename, output.read()))
+        writer.add_metadata(reader.metadata)
+        writer.write(output)
+        signed_pdfs.append((pdf_file, output.getvalue()))
 
-    attachments = []
-    for fname, content in signed_pdfs:
-        attachments.append(("signed_" + fname, content))
+    attachments = [("signed_" + fname, content) for fname, content in signed_pdfs]
 
     send_email(
         to=email,
@@ -108,6 +101,7 @@ def sign_documents():
         body="Attached are your signed documents for the Hilde B Foundation.",
         attachments=attachments
     )
+
     send_email(
         to=EMAIL_ADDRESS,
         subject=f"New Signing Submitted: {name}",
@@ -122,8 +116,8 @@ def send_email(to, subject, body, attachments=None):
     msg["From"] = EMAIL_ADDRESS
     msg["To"] = to
     msg["Subject"] = subject
-
     msg.attach(MIMEText(body, "plain"))
+
     attachments = attachments or []
     for filename, filecontent in attachments:
         part = MIMEApplication(filecontent, Name=filename)
