@@ -67,53 +67,69 @@ def verify_code():
 
     return jsonify({"success": True})
 
+
 @app.route("/sign", methods=["POST"])
 def sign():
+    import io
+    from datetime import datetime
+    from PyPDF2 import PdfReader, PdfWriter
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.pagesizes import letter
+    from PIL import Image
+    import base64
+    import os
+    import tempfile
+
     name = request.form["name"]
     email = request.form["email"]
     role = request.form["role"]
     signature_data = request.form["signature"]
 
     signature_image = Image.open(io.BytesIO(base64.b64decode(signature_data.split(",")[1])))
-    signature_path = "/tmp/signature.png"
-    signature_image.save(signature_path)
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmp_sig_file:
+        tmp_sig_path = tmp_sig_file.name
+        signature_image.save(tmp_sig_path)
 
+    date_str = datetime.now().strftime("%Y-%m-%d")
     signed_pdfs = []
-    for pdf_file in roles_to_pdfs.get(role, []):
-        pdf_path = f"static/pdf_templates/{pdf_file}"
-        output = io.BytesIO()
+
+    for filename in roles_to_pdfs.get(role, []):
+        pdf_path = os.path.join("static/pdf_templates", filename)
         reader = PdfReader(pdf_path)
         writer = PdfWriter()
 
-        for page in reader.pages:
+        for i, page in enumerate(reader.pages):
+            packet = io.BytesIO()
+            c = canvas.Canvas(packet, pagesize=letter)
+            c.drawString(72, 40, f"Signed by: {name}")
+            c.drawString(72, 25, f"Date: {date_str}")
+            c.drawImage(tmp_sig_path, 400, 20, width=150, height=50)
+            c.save()
+            packet.seek(0)
+            overlay_pdf = PdfReader(packet)
+            page.merge_page(overlay_pdf.pages[0])
             writer.add_page(page)
 
-        if reader.metadata:
-            sanitized_metadata = {
-                k: str(v) for k, v in reader.metadata.items() if isinstance(k, str)
-            }
-            writer.add_metadata(sanitized_metadata)
+        output = io.BytesIO()
         writer.write(output)
-        signed_pdfs.append((pdf_file, output.getvalue()))
+        output.seek(0)
+        signed_pdfs.append((f"signed_{filename}", output.read()))
 
-    attachments = [("signed_" + fname, content) for fname, content in signed_pdfs]
-
+    # Send emails with attachments
     send_email(
         to=email,
         subject="Your Signed Documents",
         body="Attached are your signed documents for the Hilde B Foundation.",
-        attachments=attachments
+        attachments=signed_pdfs
     )
-
     send_email(
         to=EMAIL_ADDRESS,
         subject=f"New Signing Submitted: {name}",
-        body=f"{name} ({email}) signed the following as {role}: {[x[0] for x in attachments]}",
-        attachments=attachments
+        body=f"{name} ({email}) signed as {role}.",
+        attachments=signed_pdfs
     )
 
     return "Documents signed and emailed!"
-
 def send_email(to, subject, body, attachments=None):
     msg = MIMEMultipart()
     msg["From"] = EMAIL_ADDRESS
