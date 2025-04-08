@@ -31,42 +31,43 @@
 </head>
 <body>
   <div id="content-en" style="display:block;">
-  <header>
-    <img src="logo-hildeb.png" alt="Hilde B Foundation Logo" class="logo">
-    <h1>Hilde B Foundation</h1>
-  </header>
-  <div class="quiz-container">
-    <img src="red-flag.png" alt="Red Flag" class="red-flag">
-    <h1>Count Your Red Flags</h1>
-    <form id="quizForm">
-      <div class="question">
-        <p>1. Does your partner isolate you from friends or family?</p>
-        <label><input type="radio" name="q1" value="1"> Yes</label>
-        <label><input type="radio" name="q1" value="0"> No</label>
-      </div>
-      <div class="question">
-        <p>2. Do they track your location or monitor your devices?</p>
-        <label><input type="radio" name="q2" value="1"> Yes</label>
-        <label><input type="radio" name="q2" value="0"> No</label>
-      </div>
-      <div class="question">
-        <p>3. Have they ever yelled, threatened, or physically hurt you?</p>
-        <label><input type="radio" name="q3" value="1"> Yes</label>
-        <label><input type="radio" name="q3" value="0"> No</label>
-      </div>
-      <div class="question">
-        <p>4. Do you feel afraid to express yourself around them?</p>
-        <label><input type="radio" name="q4" value="1"> Yes</label>
-        <label><input type="radio" name="q4" value="0"> No</label>
-      </div>
-      <div class="question">
-        <p>5. Do they control your access to money or decisions?</p>
-        <label><input type="radio" name="q5" value="1"> Yes</label>
-        <label><input type="radio" name="q5" value="0"> No</label>
-      </div>
-      <button type="submit">Submit</button>
-    </form>
-    <div class="summary" id="result"></div>
+    <header>
+      <img src="logo-hildeb.png" alt="Hilde B Foundation Logo" class="logo">
+      <h1>Hilde B Foundation</h1>
+    </header>
+    <div class="quiz-container">
+      <img src="red-flag.png" alt="Red Flag" class="red-flag">
+      <h1>Count Your Red Flags</h1>
+      <form id="quizForm">
+        <div class="question">
+          <p>1. Does your partner isolate you from friends or family?</p>
+          <label><input type="radio" name="q1" value="1"> Yes</label>
+          <label><input type="radio" name="q1" value="0"> No</label>
+        </div>
+        <div class="question">
+          <p>2. Do they track your location or monitor your devices?</p>
+          <label><input type="radio" name="q2" value="1"> Yes</label>
+          <label><input type="radio" name="q2" value="0"> No</label>
+        </div>
+        <div class="question">
+          <p>3. Have they ever yelled, threatened, or physically hurt you?</p>
+          <label><input type="radio" name="q3" value="1"> Yes</label>
+          <label><input type="radio" name="q3" value="0"> No</label>
+        </div>
+        <div class="question">
+          <p>4. Do you feel afraid to express yourself around them?</p>
+          <label><input type="radio" name="q4" value="1"> Yes</label>
+          <label><input type="radio" name="q4" value="0"> No</label>
+        </div>
+        <div class="question">
+          <p>5. Do they control your access to money or decisions?</p>
+          <label><input type="radio" name="q5" value="1"> Yes</label>
+          <label><input type="radio" name="q5" value="0"> No</label>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+      <div class="summary" id="result"></div>
+    </div>
   </div>
 
   <script>
@@ -83,12 +84,13 @@
       }
 
       let summary = `You flagged ${score} out of ${totalQuestions} red flags.`;
+
       if (score >= 3) {
-        summary += "\nWe strongly encourage you to seek support or learn more at <a href="www.hildebfoundation.org">www.hildebfoundation.org</a>.";
+        summary += `<br><strong>We strongly encourage you to seek support or learn more at <a href="https://www.hildebfoundation.org" target="_blank">www.hildebfoundation.org</a>.</strong>`;
       } else if (score >= 1) {
-        summary += "\nYou may want to explore healthy relationship resources or talk to someone you trust.";
+        summary += `<br>You may want to explore healthy relationship resources or talk to someone you trust.`;
       } else {
-        summary += "\nGreat! But it's still helpful to stay informed and support others who may be at risk.";
+        summary += `<br>Great! But it's still helpful to stay informed and support others who may be at risk.`;
       }
 
       document.getElementById("result").innerHTML = summary;
