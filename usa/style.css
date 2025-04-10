@@ -1,0 +1,115 @@
+/* Shared Styles for Hilde B Foundation Subdomains */
+
+/* === Color Theme === */
+:root {
+  --primary-color: #9b6bcc;
+  --text-light: #ffffff;
+  --light-background: #f8f8f8;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* === Header === */
+header {
+  background-color: var(--primary-color);
+  padding: 20px 0;
+  color: var(--text-light);
+  text-align: center;
+}
+
+header nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+header nav ul li a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* === Logo === */
+.logo {
+  height: 50px;
+  width: auto;
+  margin-bottom: 10px;
+}
+
+/* === Language Buttons === */
+.language-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px;
+  background-color: var(--primary-color);
+  gap: 6px;
+}
+
+.language-buttons button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.language-buttons img {
+  width: 24px;
+  height: auto;
+  margin-right: 6px;
+}
+
+/* === Action Buttons === */
+.button {
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+/* === Partner Section === */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.partners-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 30px;
+}
+
+.partner {
+  flex: 1 1 250px;
+  background-color: var(--light-background);
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 5px var(--shadow);
+}
+
+/* === Footer === */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: var(--primary-color);
+  color: var(--text-light);
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 600px) {
+  header nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
